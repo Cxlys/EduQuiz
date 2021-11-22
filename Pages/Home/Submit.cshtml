@@ -1,0 +1,55 @@
+﻿@page
+@model pleaseoftheloveofgodbethelastversionofthisproject.Pages.Home.SubmitModel
+@{
+    ViewData["Title"] = "Submit your question!";
+}
+
+<h1>@ViewData["Title"]</h1>
+@if (User.Identity.IsAuthenticated)
+{
+    <form method="post">
+        <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+        <div class="form-group">
+            <div class="form-group-row">
+                <label asp-for="userContent.QuestionContent">Write your question below! (MAX: 256 characters) </label>
+                <span asp-validation-for="userContent.QuestionContent" class="text-danger"></span>
+            </div>
+            <div class="form-group-row">
+                <input class="input-group flex-fill col-10" asp-for="userContent.QuestionContent" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="form-group-row">
+                <label asp-for="userContent.AnswerContent">Write the answer to your question below! (MAX: 256 characters)</label>
+                <span asp-validation-for="userContent.AnswerContent" class="text-danger"></span>
+            </div>
+            <div class="form-group-row">
+                <input class="input-group-lg flex-fill col-10" asp-for="userContent.AnswerContent" />
+            </div>        
+        </div>
+        <div class="form-group">
+            <div class="form-group-row">
+                <label asp-for="userContent.QuestionType">Which topic is this question for?</label>
+                <select asp-for="userContent.QuestionType">
+                    <option disabled selected value="">---Pick a topic---</option>
+                    @foreach (var item in Model.QuestionType)
+                    {
+                        <option value="@item.TypeId">@item.QuestionType1</option>
+                    }
+                </select>
+                <span asp-validation-for="userContent.QuestionType" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group-row">
+            <button type="submit" class="btn btn-success btn-block col-10">Submit</button>
+        </div>
+    </form>
+}
+else
+{
+    <p>Please <a asp-area="Identity" asp-page="/Account/Login">Log in</a> before submitting a post.</p>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

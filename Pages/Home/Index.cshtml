@@ -1,0 +1,59 @@
+﻿@page
+@model pleaseoftheloveofgodbethelastversionofthisproject.Pages.Home.IndexModel
+@{
+
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="" style="height: 90vh;">
+        <div class="d-flex flex-column w-25 float-left" style="height: 100%; margin-top: 1.5rem;">
+            <div class="d-flex flex-column border text-center" style="height: 15rem;">
+                <span class="display-4" style="font-size: 2rem; margin-bottom: 0.5rem; margin-top: 1rem; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">You are level:</span>
+                <span class="display-1"><strong>@(Model.currentUserData.ExperienceTotal / 1500)</strong></span>
+                <span style="margin-top: 1rem;"><strong>@(Model.currentUserData.ExperienceTotal % 1500)</strong> / 1500 until next level</span>
+            </div>
+            <div class="p-3 d-flex flex-column text-center">
+                <span><strong>Your stats:</strong></span>
+                <span>Correct answers: <strong>@Model.currentUserData.CorrectAnswers</strong></span>
+                <span>Questions attempted: <strong>@Model.currentUserData.QuestionsAttempted</strong></span>
+                <span>Questions contributed: <strong>@Model.currentUserContent.Count()</strong></span>
+            </div>
+        </div>
+
+        <div class="d-flex flex-column w-75 h-100 float-right" style="padding-left: 3rem; margin-top: 1.5rem;">
+            <div class="d-flex flex-row w-100" style="height: 12.5%; margin-bottom: 3.75rem;">
+                <a class="btn btn-outline-dark h-100" style="width: 32%; font-size: 2rem; height: 100%; line-height: 5.25rem; text-align: center;" asp-page="Submit">Submit</a>
+                <a class="btn btn-outline-dark h-100" style="width: 32%; font-size: 2rem; height: 100%; line-height: 5.25rem; text-align: center; margin-left: 2%;" asp-page="Quiz/Index">Quiz</a>
+                <a class="btn btn-outline-dark h-100" style="width: 32%; font-size: 2rem; height: 100%; line-height: 5.25rem; text-align: center; margin-left: 2%;" asp-page="/Leaderboards">Leaderboards</a>
+            </div>
+            <div class="">
+                <span class="display-4" style="font-size: 3rem;">Your submissions</span>
+                @if (Model.currentUserContent.Count() > 0)
+                {
+
+                    foreach (var item in Model.currentUserContent)
+                    {
+
+                        <div class="border p-3" style="margin-top: 1.3rem;">
+                            <strong>@Html.DisplayFor(m => item.QuestionContent)</strong> / @Model.topics[item.QuestionType - 1].QuestionType1<br />
+                            <strong>@Html.DisplayFor(m => item.AnswerContent)<br /></strong>
+                            <span>Likes: @Html.DisplayFor(m => item.Likes)</span><br />
+                            <span>Dislikes: @Html.DisplayFor(m => item.Dislikes)</span><br />
+                            <span>Flags: @Html.DisplayFor(m => item.Flags)</span><br />
+                            @if (item.Shadowed == true)
+                            {
+                                <span><i>This submission has been hidden by an administrator and will not show up in quizzes.</i></span>
+                            }
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <p>Please login <a asp-area="Identity" asp-page="/Account/Login">here</a> in order to view this page.</p>
+}
+

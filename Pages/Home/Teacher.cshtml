@@ -1,0 +1,98 @@
+﻿@page
+@model pleaseoftheloveofgodbethelastversionofthisproject.Pages.Home.TeacherModel
+@{
+}
+
+@if (User.Identity.IsAuthenticated && TeacherModel.CurrentUserRole.RoleId == "2")
+{
+    if (TeacherModel.pageState == true)
+    {
+        @if (Model.UserContent.Count() > 0)
+        {
+            <div class="text-center ">
+                <h1 class="display-4">Edit/delete from question database</h1>
+                <form method="post">
+                    <button type="submit" class="btn btn-outline-primary" asp-page-handler="PageSwitchHandler">Switch to student view</button>
+                </form>
+            </div>
+
+            @foreach (var item in Model.UserContent)
+            {
+
+                <form method="post">
+                    <div class="align-items-center text-center">
+                        <div class="border p-3 m-3">
+                            <strong>@Html.DisplayFor(m => item.QuestionContent) / @Model.topics[item.QuestionType - 1].QuestionType1<br /></strong>
+                            <strong>@Html.DisplayFor(m => item.AnswerContent)<br /></strong>
+                            <span>Likes: @Html.DisplayFor(m => item.Likes)</span><br />
+                            <span>Dislikes: @Html.DisplayFor(m => item.Dislikes)</span><br />
+                            <span>Flags: @Html.DisplayFor(m => item.Flags)</span><br />
+                            @if (item.Shadowed == true)
+                            {
+                                <i>Hidden... <button type="submit" class="btn btn-outline-dark" asp-page-handler="DeleteHandler">Revert this change?</button></i>
+                            }
+                            else
+                            {
+                                <button type="submit" class="btn btn-danger" asp-page-handler="DeleteHandler">Hide item</button>
+                            }
+                            <input type="hidden" value="@item.PostId" asp-for="deleteId" />
+                        </div>
+                    </div>
+                </form>
+            }
+        }
+        else
+        {
+            <p>Our table for storing question data did not return with anything. Please try refreshing the page or contacting a website administrator.</p>
+        }
+    }
+    else
+    {
+        <div class="text-center">
+            <h1 class="display-4">Student data</h1>
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <label asp-for="tempStudentName">Input your student's username here to either remove or add them to your connections:</label><br />
+                    <input asp-for="tempStudentName" /><br/>
+                    <span asp-validation-for="tempStudentName" class="text-danger"></span><br/>
+                    <button type="submit" class="btn btn-outline-success w-25" asp-page-handler="ConnectionHandler" style="margin-bottom: 0.5rem;">Submit connection</button>
+            </form>
+            <form method="post">
+                <button type="submit" class="btn text-primary btn-outline-primary w-25" asp-page-handler="PageSwitchHandler">Switch to question view</button>
+            </form>
+        </div><br/>
+        @if (Model.ConnectedStudentList.Count() > 0)
+        {
+            <div class="text-center">
+                <span>Students listed below are those who are connected to your account.</span>
+            </div>
+
+            @foreach (var item in Model.ConnectedStudentList)
+            {
+                <form method="post">
+                    <div class="align-items-center text-center">
+                        <div class="border p-3 m-3">
+                            <strong>@Html.DisplayFor(m => item.UserName)<br /></strong>
+                            <span>Attempted questions: @Html.DisplayFor(m => item.QuestionsAttempted)</span><br />
+                            <span>Correct answers: @Html.DisplayFor(m => item.CorrectAnswers)</span><br />
+                        </div>
+
+                    </div>
+                </form>
+            }
+        }
+        else
+        {
+            <p class="text-center">You do not have any students connected to your account.</p>
+        }
+    }
+}
+else
+{
+    <p>Please log in to a teacher account.</p>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

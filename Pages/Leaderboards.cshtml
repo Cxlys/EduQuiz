@@ -1,0 +1,42 @@
+﻿@page
+@model pleaseoftheloveofgodbethelastversionofthisproject.Pages.LeaderboardsModel
+@{
+    var i = 1;
+}
+
+<div class="text-center">
+    <form method="post">
+        <h1 class="display-4">Leaderboards</h1>
+        <h5>Search for users who have the highest:</h5>
+        <select asp-for="tempUserInput">
+            <option selected value="CorrectAnswers">Amount of correct answers</option>
+            <option value="QuestionsAttempted">Amount of attempted questions</option>
+        </select><br /><br />
+        <span><strong>Display how many results?</strong></span>
+        <select asp-for="ListInput">
+            <option selected value="10">10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+            <option value="40">40</option>
+            <option value="50">50</option>
+        </select>
+
+        <button class="btn-success btn-sm">Refresh page</button><br />
+    </form>
+
+    @if (LeaderboardsModel.UserList.Count() > 0)
+    {
+        foreach (var item in LeaderboardsModel.UserList)
+        {
+            <div class="border p-3 m-3">
+                <span>Rank @i:</span><br />
+                <strong>@Html.DisplayFor(m => item.UserName)</strong><br />
+                <span>Attempted questions: @Html.DisplayFor(m => item.QuestionsAttempted)</span><br />
+                <span>Correct answers: @Html.DisplayFor(m => item.CorrectAnswers)</span>
+            </div>
+            i++;
+        }
+    }
+</div>
+
+

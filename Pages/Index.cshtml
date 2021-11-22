@@ -1,0 +1,31 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="" style="height: 80vh;">
+    <div class="w-50 h-100 d-flex float-left">
+        <div class="w-100 align-self-center">
+            <img src="~/img/test.jpg" style="width: 100%; height: auto;" /><br />
+        </div>
+    </div>
+
+    <div class="w-50 h-100 d-flex float-right">
+        <div class="d-flex flex-column p-3 align-self-center">
+            <h3 class=""><strong>Reach your maximum potential!</strong></h3>
+            <span class="">EduQuiz is a website dedicated to making sure that you succeed. Join single units of users registered today and aim for the top!</span><br />
+            @if (User.Identity.IsAuthenticated)
+            {
+                <a class="btn-outline-primary btn" asp-page="/Home/Index" style="margin-bottom: 0.25rem;">Go to home page</a>
+            }
+            else
+            {
+                <a class="btn-outline-success btn" asp-area="Identity" asp-page="/Account/Register" style="margin-bottom: 0.25rem;">Sign up!</a>
+            }
+            <a class="btn-outline-info btn" asp-page="Leaderboards">Check the leaderboards!</a>
+
+        </div>
+    </div>
+</div>
+
